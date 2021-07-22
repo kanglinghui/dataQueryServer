@@ -1,42 +1,114 @@
-const Koa = require('koa')
-const app = new Koa()
-const views = require('koa-views')
-const json = require('koa-json')
-const onerror = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
-const logger = require('koa-logger')
+const router = require('koa-router')()
 
-const index = require('./routes/index')
-const users = require('./routes/users')
+const db = require("../dbBase/index");
+const { errLogger } = require('../logger');
 
-onerror(app)
 
-app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
-}))
-app.use(json())
-app.use(logger())
-app.use(require('koa-static')(__dirname + '/dist'))
-
-app.use(views(__dirname + '/views', {
-  extension: 'pug'
-}))
-
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+router.get('/', async (ctx, next) => {
+  await ctx.render('index', {
+    title: 'Hello Koa 2!'
+  })
 })
 
-// routes
-app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
+router.get('/string', async (ctx, next) => {
+  ctx.body = 'koa2 string'
+})
 
-// error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
-});
-
-module.exports = app
+router.get('/json', async (ctx, next) => {
+  ctx.body = {
+    title: 'koa2 json',
+    isSuccess: true
+  }
+})
+router.post("/add", async (ctx,next) => { 
+    try{
+        const params = ctx.request.body;
+        const updateTime = new Date();
+        if (params.tableName) {
+            const res = await db.addMd({...params,updateTime:updateTime});
+            ctx.body = res;
+        } else {
+            ctx.body = {
+                isSuccess: false,
+                errorMessage: "参数异常!"
+            }
+        }
+    } catch(err) {
+        errLogger.error(err)
+    }
+})
+router.post("/query", async (ctx,next) => {
+    try {
+        const params = ctx.request.body;
+        if (params.tableName || params.tableName === "") {
+            const res = await db.queryMd(params.tableName);
+            ctx.body = res;
+        } else {
+            ctx.body = {
+                isSuccess: false,
+                errorMessage: "参数异常!"
+            }
+        }
+    } catch (err) {
+        errLogger.error(err)
+    }
+})
+router.post("/update", async (ctx,next) => {
+    try {
+        const params = ctx.request.body;
+        if (params.id) {
+            const res = await db.updateMd(params.id,{ ...params });
+            ctx.body = res;
+        } else {
+            ctx.body = {
+                isSuccess: false,
+                errorMessage: "参数异常!"
+            }
+        }
+    } catch (err) {
+        errLogger.error(err)
+    }
+})
+router.post("/delRow", async (ctx,next) => {
+    try {
+	const id = ctx.request.body.id;	
+	if (id) {
+		const res = await db.delRow(id);
+		ctx.body = res;
+	} else {
+		ctx.body = {
+			isSuccess: false,
+			errorMessage: "没有获取到ID!"	
+		}
+	}
+    } catch (err) {
+        errLogger.error(err)
+    }
+})
+router.post("/mainLog", async (ctx,next) => {
+    try {
+        errLogger.error(ctx)
+    // const params = ctx.request.body;
+    // const time = new Date();
+    // const fileName = `../log/mainLog${time}.txt`;
+    // fs.writeFile(fileName,params,function (err) {
+    // 	 console.log(err)	
+    // })
+    } catch (err) {
+        errLogger.error(err)
+    }
+})
+router.post("/viewLog", async (ctx,next) => {
+    try {
+        errLogger.error(ctx)
+    // const params = ctx.request.body;
+    // const time = new Date();
+    // const fileName = `../log/viewLog${time}.txt`;
+    // fs.writeFile(fileName,params,function (err) {
+    // 	 console.log(err)	
+    // })
+    } catch(err) {
+        errLogger.error(err)
+    }
+})
+module.exports = router

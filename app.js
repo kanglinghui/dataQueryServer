@@ -8,6 +8,7 @@ const logger = require('koa-logger')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
+const { errLogger } = require('./logger');
 
 onerror(app)
 
@@ -37,6 +38,7 @@ app.use(users.routes(), users.allowedMethods())
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
+  errLogger.error(err)
 });
 
 module.exports = app
