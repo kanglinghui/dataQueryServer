@@ -22,7 +22,7 @@ log4js.configure({
   categories: {
     default: { appenders: [ 'out' ], level: 'info' },
     access: { appenders: [ 'access' ], level: 'info' },
-    application: { appenders: [ 'application' ], level: 'WARN'}
+    application: { appenders: [ 'application' ], level: 'all'}
   }
 });
 

@@ -35,7 +35,7 @@ router.post("/add", async (ctx,next) => {
         }
     } catch(err) {
         console.log(err)
-        errLogger.error(err)
+        errLogger.info(err)
     }
 })
 router.post("/query", async (ctx,next) => {
@@ -52,7 +52,7 @@ router.post("/query", async (ctx,next) => {
         }
     } catch (err) {
         console.log(err)
-        errLogger.error(err)
+        errLogger.info(err)
     }
 })
 router.post("/update", async (ctx,next) => {
@@ -69,7 +69,7 @@ router.post("/update", async (ctx,next) => {
         }
     } catch (err) {
         console.log(err)
-        errLogger.error(err)
+        errLogger.info(err)
     }
 })
 router.post("/delRow", async (ctx,next) => {
@@ -86,12 +86,12 @@ router.post("/delRow", async (ctx,next) => {
 	}
     } catch (err) {
         console.log(err)
-        errLogger.error(err)
+        errLogger.info(err)
     }
 })
 router.post("/mainLog", async (ctx,next) => {
     try {
-        errLogger.error(ctx)
+        errLogger.info(ctx)
     // const params = ctx.request.body;
     // const time = new Date();
     // const fileName = `../log/mainLog${time}.txt`;
@@ -100,12 +100,12 @@ router.post("/mainLog", async (ctx,next) => {
     // })
     } catch (err) {
         console.log(err)
-        errLogger.error(err)
+        errLogger.info(err)
     }
 })
 router.post("/viewLog", async (ctx,next) => {
     try {
-        errLogger.error(ctx)
+        errLogger.info(ctx)
     // const params = ctx.request.body;
     // const time = new Date();
     // const fileName = `../log/viewLog${time}.txt`;
@@ -114,7 +114,7 @@ router.post("/viewLog", async (ctx,next) => {
     // })
     } catch(err) {
         console.log(err)
-        errLogger.error(err)
+        errLogger.info(err)
     }
 })
 module.exports = router
