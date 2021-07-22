@@ -8,8 +8,7 @@ const logger = require('koa-logger')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
-const { errLogger } = require('./logger');
-
+const { errLogger } = require('./logger.js');
 onerror(app)
 
 app.use(bodyparser({

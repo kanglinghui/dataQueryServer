@@ -34,6 +34,7 @@ router.post("/add", async (ctx,next) => {
             }
         }
     } catch(err) {
+        console.log(err)
         errLogger.error(err)
     }
 })
@@ -50,6 +51,7 @@ router.post("/query", async (ctx,next) => {
             }
         }
     } catch (err) {
+        console.log(err)
         errLogger.error(err)
     }
 })
@@ -66,6 +68,7 @@ router.post("/update", async (ctx,next) => {
             }
         }
     } catch (err) {
+        console.log(err)
         errLogger.error(err)
     }
 })
@@ -82,6 +85,7 @@ router.post("/delRow", async (ctx,next) => {
 		}
 	}
     } catch (err) {
+        console.log(err)
         errLogger.error(err)
     }
 })
@@ -95,6 +99,7 @@ router.post("/mainLog", async (ctx,next) => {
     // 	 console.log(err)	
     // })
     } catch (err) {
+        console.log(err)
         errLogger.error(err)
     }
 })
@@ -108,6 +113,7 @@ router.post("/viewLog", async (ctx,next) => {
     // 	 console.log(err)	
     // })
     } catch(err) {
+        console.log(err)
         errLogger.error(err)
     }
 })
