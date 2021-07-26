@@ -14,6 +14,8 @@ onerror(app)
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
+const compress = require('koa-compress');
+app.use(compress())
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/dist'))
